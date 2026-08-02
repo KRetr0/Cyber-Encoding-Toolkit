@@ -2,9 +2,8 @@
 
 # 🔐 Cyber Encoding Toolkit
 
-<img src="https://raw.githubusercontent.com/KRetr0/Cyber-Encoding-Toolkit/main/assets/banner.png" width="700">
 
-<br>
+
 
 ### Encoding & Detection Security Utility
 
