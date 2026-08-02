@@ -1,147 +1,311 @@
-from base64_tool import encode as b64_encode, decode as b64_decode
-from base32_tool import encode as b32_encode, decode as b32_decode
-from hex_tool import encode as hex_encode, decode as hex_decode
-from url_tool import encode as url_encode, decode as url_decode
-from detector import detect
+from banner import show_banner, clear_screen
+
+from encoders.base64_tool import (
+    encode as b64_encode,
+    decode as b64_decode
+)
+
+from encoders.base32_tool import (
+    encode as b32_encode,
+    decode as b32_decode
+)
+
+from encoders.hex_tool import (
+    encode as hex_encode,
+    decode as hex_decode
+)
+
+from encoders.url_tool import (
+    encode as url_encode,
+    decode as url_decode
+)
+
+from core.detector import detect
+
+from core.errors import (
+    EncodingError,
+    show_error
+)
 
 
-print("=== Cyber Encoding Toolkit ===")
-print()
+def show_menu():
 
-print("1 - Base64 Encode")
-print("2 - Base64 Decode")
-print("3 - Base32 Encode")
-print("4 - Base32 Decode")
-print("5 - Hex Encode")
-print("6 - Hex Decode")
-print("7 - URL Encode")
-print("8 - URL Decode")
-print("9 - Auto Detect")
+    print("""
+====================================
+ Cyber Encoding Toolkit v1.0.0
+====================================
 
-print()
+1 - Base64 Encode
+2 - Base64 Decode
+
+3 - Base32 Encode
+4 - Base32 Decode
+
+5 - Hex Encode
+6 - Hex Decode
+
+7 - URL Encode
+8 - URL Decode
+
+9 - Automatic Detection
+
+0 - Exit
+
+====================================
+""")
 
 
-choice = input("Selection: ").strip()
 
+def detection_menu():
 
-if choice == "1":
-
-    text = input("Data: ")
-
-    print(
-        "Result:",
-        b64_encode(text)
+    text = input(
+        "\nData: "
     )
-
-
-elif choice == "2":
-
-    text = input("Data: ")
-
-    print(
-        "Result:",
-        b64_decode(text)
-    )
-
-
-elif choice == "3":
-
-    text = input("Data: ")
-
-    print(
-        "Result:",
-        b32_encode(text)
-    )
-
-
-elif choice == "4":
-
-    text = input("Data: ")
-
-    print(
-        "Result:",
-        b32_decode(text)
-    )
-
-
-elif choice == "5":
-
-    text = input("Data: ")
-
-    style = input(
-        "Format (normal/space/colon): "
-    ).strip()
-
-
-    print(
-        "Result:",
-        hex_encode(text, style)
-    )
-
-
-elif choice == "6":
-
-    text = input("Data: ")
-
-    print(
-        "Result:",
-        hex_decode(text)
-    )
-
-
-elif choice == "7":
-
-    text = input("Data: ")
-
-    mode = input(
-        "Mode (standard/form): "
-    ).strip()
-
-
-    print(
-        "Result:",
-        url_encode(text, mode)
-    )
-
-
-elif choice == "8":
-
-    text = input("Data: ")
-
-    mode = input(
-        "Mode (standard/form): "
-    ).strip()
-
-
-    print(
-        "Result:",
-        url_decode(text, mode)
-    )
-
-
-elif choice == "9":
-
-    text = input("Data: ")
 
 
     results = detect(text)
 
 
-    if results:
+    if not results:
 
-        print("\nDetection Results:")
+        print(
+            "\n[!] Unknown format"
+        )
 
-        for name, score in results:
+        return
+
+
+    print(
+        "\nDetection Results:\n"
+    )
+
+
+    print(
+        f"Most Possible Format: {results[0][0]}"
+    )
+
+    print(
+        f"Confidence: {results[0][1]}%"
+    )
+
+
+    if len(results) > 1:
+
+        print(
+            "\nOther Results:"
+        )
+
+
+        for name, score in results[1:]:
 
             print(
                 f"{name}: {score}%"
             )
 
-    else:
-
-        print("Unknown format")
 
 
-else:
+def main():
 
-    print("Invalid selection")
+    # İlk açılış banner animasyonu
+    show_banner(animated=True)
+
+
+    while True:
+
+
+        show_menu()
+
+
+        choice = input(
+            "Selection: "
+        ).strip()
+
+
+
+        try:
+
+
+            if choice == "1":
+
+                text = input(
+                    "Data: "
+                )
+
+                print(
+                    "\nResult:",
+                    b64_encode(text)
+                )
+
+
+
+            elif choice == "2":
+
+                text = input(
+                    "Data: "
+                )
+
+                print(
+                    "\nResult:",
+                    b64_decode(text)
+                )
+
+
+
+            elif choice == "3":
+
+                text = input(
+                    "Data: "
+                )
+
+                print(
+                    "\nResult:",
+                    b32_encode(text)
+                )
+
+
+
+            elif choice == "4":
+
+                text = input(
+                    "Data: "
+                )
+
+                print(
+                    "\nResult:",
+                    b32_decode(text)
+                )
+
+
+
+            elif choice == "5":
+
+                text = input(
+                    "Data: "
+                )
+
+
+                style = input(
+                    "Format (normal/space/colon): "
+                ).strip()
+
+
+                print(
+                    "\nResult:",
+                    hex_encode(
+                        text,
+                        style
+                    )
+                )
+
+
+
+            elif choice == "6":
+
+                text = input(
+                    "Data: "
+                )
+
+                print(
+                    "\nResult:",
+                    hex_decode(text)
+                )
+
+
+
+            elif choice == "7":
+
+                text = input(
+                    "Data: "
+                )
+
+
+                mode = input(
+                    "Mode (standard/form): "
+                ).strip()
+
+
+                print(
+                    "\nResult:",
+                    url_encode(
+                        text,
+                        mode
+                    )
+                )
+
+
+
+            elif choice == "8":
+
+                text = input(
+                    "Data: "
+                )
+
+
+                mode = input(
+                    "Mode (standard/form): "
+                ).strip()
+
+
+                print(
+                    "\nResult:",
+                    url_decode(
+                        text,
+                        mode
+                    )
+                )
+
+
+
+            elif choice == "9":
+
+                detection_menu()
+
+
+
+            elif choice == "0":
+
+                print(
+                    "\nClosing Cyber Encoding Toolkit..."
+                )
+
+                break
+
+
+
+            else:
+
+                print(
+                    "\n[!] Invalid selection"
+                )
+
+
+
+        except EncodingError as error:
+
+            show_error(error)
+
+
+
+        except Exception as error:
+
+            show_error(
+                f"Unexpected error: {error}"
+            )
+
+
+
+        input(
+            "\nPress Enter to continue..."
+        )
+
+
+        # Ekranı temizle ve bannerı geri getir
+        clear_screen()
+
+        show_banner(animated=False)
+
+
+
+if __name__ == "__main__":
+
+    main()
